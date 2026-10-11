@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   TrendingUp,
   AlertTriangle,
@@ -14,6 +15,12 @@ import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 
 export const DashboardPage = ({ onNavigate }) => {
+  const navigate = useNavigate();
+  const handleNav = (tab) => {
+    if (onNavigate) onNavigate(tab);
+    navigate(tab.startsWith('/') ? tab : `/${tab}`);
+  };
+
   const { user, currentCourse } = useAuth();
   const [profile, setProfile] = useState(null);
   const [recommendations, setRecommendations] = useState(null);
@@ -74,14 +81,14 @@ export const DashboardPage = ({ onNavigate }) => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => onNavigate('tutor')}
+            onClick={() => handleNav('tutor')}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/20 transition-all"
           >
             <Sparkles className="w-4 h-4" />
             <span>Ask AI Tutor</span>
           </button>
           <button
-            onClick={() => onNavigate('assessment')}
+            onClick={() => handleNav('assessment')}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all"
           >
             <span>Take Diagnostic</span>
@@ -152,7 +159,7 @@ export const DashboardPage = ({ onNavigate }) => {
             <span className="text-xs text-sky-400 font-semibold">Cards Due</span>
           </div>
           <button
-            onClick={() => onNavigate('flashcards')}
+            onClick={() => handleNav('flashcards')}
             className="text-[11px] text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1"
           >
             <span>Review Today's Cards</span>
@@ -189,7 +196,7 @@ export const DashboardPage = ({ onNavigate }) => {
             </div>
 
             <button
-              onClick={() => onNavigate('tutor')}
+              onClick={() => handleNav('tutor')}
               className="shrink-0 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md flex items-center gap-2"
             >
               <span>Start 5-Min Remediation</span>
@@ -200,7 +207,7 @@ export const DashboardPage = ({ onNavigate }) => {
           {/* Action Checklist */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
             <div
-              onClick={() => onNavigate('sources')}
+              onClick={() => handleNav('sources')}
               className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 hover:border-slate-700 cursor-pointer space-y-1 transition-all"
             >
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -211,7 +218,7 @@ export const DashboardPage = ({ onNavigate }) => {
             </div>
 
             <div
-              onClick={() => onNavigate('assessment')}
+              onClick={() => handleNav('assessment')}
               className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 hover:border-slate-700 cursor-pointer space-y-1 transition-all"
             >
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -222,7 +229,7 @@ export const DashboardPage = ({ onNavigate }) => {
             </div>
 
             <div
-              onClick={() => onNavigate('planner')}
+              onClick={() => handleNav('planner')}
               className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 hover:border-slate-700 cursor-pointer space-y-1 transition-all"
             >
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -275,7 +282,7 @@ export const DashboardPage = ({ onNavigate }) => {
             </div>
 
             <button
-              onClick={() => onNavigate('tutor')}
+              onClick={() => handleNav('tutor')}
               className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center justify-center gap-2 transition-colors"
             >
               <span>Explain in Socratic Mode</span>

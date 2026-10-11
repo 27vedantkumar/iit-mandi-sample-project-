@@ -103,8 +103,8 @@ class MultimodalIngestionService:
                 extracted_chunks = SemanticChunker.chunk_pptx_slides(slides, filename)
                 
             elif file_type == "video_mp4" or fn_lower.endswith(".mp4") or "transcript" in fn_lower:
-                text_content = file_bytes.decode("utf-8", errors="replace")
-                segments = VideoParser.parse_transcript_text(text_content, filename)
+                # Executes true multimodal video pipeline (OpenCV Scene-Change Detection + PyTesseract Keyframe OCR + Transcript Fusion)
+                segments = VideoParser.parse_multimodal_video(file_bytes, filename)
                 video_segments_count = len(segments)
                 
                 vid = Video(

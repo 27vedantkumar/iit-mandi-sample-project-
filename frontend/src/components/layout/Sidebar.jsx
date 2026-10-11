@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   MessageSquareText,
@@ -12,18 +13,20 @@ import {
   Gamepad2
 } from 'lucide-react';
 
-export const Sidebar = ({ currentTab, onSelectTab }) => {
+export const Sidebar = () => {
+  const location = useLocation();
+
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'tutor', label: 'Grounded Tutor', icon: MessageSquareText, badge: '6 Modes' },
-    { id: 'graph', label: 'Knowledge Graph', icon: Network },
-    { id: 'sources', label: 'Source Explorer', icon: FolderTree },
-    { id: 'assessment', label: 'Adaptive Assessment', icon: CheckSquare, badge: 'Diagnostic' },
-    { id: 'planner', label: 'Study Planner', icon: Calendar, badge: 'Blitz' },
-    { id: 'flashcards', label: 'Flashcards', icon: Layers, badge: 'SM-2' },
-    { id: 'exams', label: 'Exam Simulator', icon: GraduationCap },
-    { id: 'coding', label: 'Coding Lab', icon: Terminal },
-    { id: 'games', label: 'Mini-Games', icon: Gamepad2, badge: '3 Games' },
+    { path: '/dashboard', alias: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/tutor', label: 'Grounded Tutor', icon: MessageSquareText, badge: '6 Modes' },
+    { path: '/graph', label: 'Knowledge Graph', icon: Network },
+    { path: '/sources', label: 'Source Explorer', icon: FolderTree },
+    { path: '/assessment', label: 'Adaptive Assessment', icon: CheckSquare, badge: 'Diagnostic' },
+    { path: '/planner', label: 'Study Planner', icon: Calendar, badge: 'Blitz' },
+    { path: '/flashcards', label: 'Flashcards', icon: Layers, badge: 'SM-2' },
+    { path: '/exams', label: 'Exam Simulator', icon: GraduationCap },
+    { path: '/coding', label: 'Coding Lab', icon: Terminal },
+    { path: '/games', label: 'Mini-Games', icon: Gamepad2, badge: '3 Games' },
   ];
 
   return (
@@ -35,12 +38,15 @@ export const Sidebar = ({ currentTab, onSelectTab }) => {
 
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentTab === item.id;
+          const isActive =
+            location.pathname === item.path ||
+            (item.alias && location.pathname === item.alias) ||
+            (item.path !== '/' && item.path !== '/dashboard' && location.pathname.startsWith(item.path));
 
           return (
-            <button
-              key={item.id}
-              onClick={() => onSelectTab(item.id)}
+            <NavLink
+              key={item.path}
+              to={item.path}
               className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 isActive
                   ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 shadow-sm'
@@ -59,7 +65,7 @@ export const Sidebar = ({ currentTab, onSelectTab }) => {
                   {item.badge}
                 </span>
               )}
-            </button>
+            </NavLink>
           );
         })}
       </div>
@@ -76,3 +82,4 @@ export const Sidebar = ({ currentTab, onSelectTab }) => {
     </aside>
   );
 };
+

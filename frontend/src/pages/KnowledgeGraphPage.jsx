@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Network,
   Lock,
@@ -15,6 +16,7 @@ import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 export const KnowledgeGraphPage = ({ onAskConcept, onPracticeConcept }) => {
+  const navigate = useNavigate();
   const { currentCourse } = useAuth();
   const [graphData, setGraphData] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -288,14 +290,20 @@ export const KnowledgeGraphPage = ({ onAskConcept, onPracticeConcept }) => {
           {/* Action Buttons */}
           <div className="space-y-2 pt-2 border-t border-slate-800">
             <button
-              onClick={() => onAskConcept && onAskConcept(selectedNode.name)}
+              onClick={() => {
+                if (onAskConcept) onAskConcept(selectedNode.name);
+                navigate('/tutor');
+              }}
               className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md flex items-center justify-center gap-2 transition-all"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Ask Tutor About This</span>
             </button>
             <button
-              onClick={() => onPracticeConcept && onPracticeConcept(selectedNode.name)}
+              onClick={() => {
+                if (onPracticeConcept) onPracticeConcept(selectedNode.name);
+                navigate('/assessment');
+              }}
               className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center justify-center gap-2 transition-all"
             >
               <span>Practice Concept Quiz</span>

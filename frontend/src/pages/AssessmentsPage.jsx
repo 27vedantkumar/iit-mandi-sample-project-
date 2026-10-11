@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   CheckSquare,
   HelpCircle,
@@ -17,6 +18,7 @@ import { useAuth } from '../context/AuthContext';
 import { SourceCitation } from '../components/citations/SourceCitation';
 
 export const AssessmentsPage = ({ onAskTutorAboutMistake }) => {
+  const navigate = useNavigate();
   const { user, currentCourse } = useAuth();
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -348,6 +350,7 @@ export const AssessmentsPage = ({ onAskTutorAboutMistake }) => {
                 onClick={() => {
                   setShowWhyWrongModal(false);
                   if (onAskTutorAboutMistake) onAskTutorAboutMistake(currentQ);
+                  navigate('/tutor');
                 }}
                 className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md flex items-center gap-1.5"
               >

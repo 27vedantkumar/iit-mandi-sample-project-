@@ -87,7 +87,7 @@ git clone https://github.com/manas0306-ops/MultiModal-Study-Platform.git
 cd MultiModal-Study-Platform
 
 # Install Python dependencies
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
 # Seed the demo course with textbook PDF, slides PPTX, and lecture MP4
 python -m scripts.seed_demo_course

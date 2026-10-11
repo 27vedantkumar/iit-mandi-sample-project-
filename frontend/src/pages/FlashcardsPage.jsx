@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Layers,
   RotateCw,
@@ -14,6 +15,7 @@ import { useAuth } from '../context/AuthContext';
 import { SourceCitation } from '../components/citations/SourceCitation';
 
 export const FlashcardsPage = () => {
+  const { deckId } = useParams();
   const { currentCourse } = useAuth();
   const [cards, setCards] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,7 +25,7 @@ export const FlashcardsPage = () => {
 
   useEffect(() => {
     loadFlashcards();
-  }, [currentCourse]);
+  }, [currentCourse, deckId]);
 
   const loadFlashcards = async () => {
     if (!currentCourse) return;

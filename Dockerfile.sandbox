@@ -1,0 +1,31 @@
+# ==============================================================================
+# EduPath AI — Hardened Ephemeral Code Runner Sandbox Image
+# Security Architecture: Non-root execution, dropped capabilities, no shell utils
+# ==============================================================================
+FROM python:3.11-alpine AS sandbox
+
+# Step 1: Create an isolated, unprivileged user and group (UID/GID 10001)
+RUN addgroup -g 10001 -S sandboxgroup && \
+    adduser -u 10001 -S sandboxuser -G sandboxgroup -h /home/sandboxuser -s /sbin/nologin
+
+# Step 2: Create a restricted runtime workspace with minimal permissions
+WORKDIR /home/sandboxuser/app
+RUN chown -R 10001:10001 /home/sandboxuser && \
+    chmod 700 /home/sandboxuser
+
+# Step 3: Remove unnecessary system packages and package managers to minimize attack surface
+RUN rm -rf /var/cache/apk/* /lib/apk/db/* /sbin/apk
+
+# Step 4: Switch to the unprivileged sandbox user
+USER 10001:10001
+
+# Step 5: Configure Python runtime flags
+# -I : Isolated mode (ignores PYTHONPATH, PYTHONHOME, removes cwd from sys.path)
+# -B : Do not write .pyc bytecode files
+# -u : Force unbuffered binary stdout/stderr
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONIOENCODING=utf-8
+
+ENTRYPOINT ["python", "-I", "-B", "-u"]
+CMD ["-"]

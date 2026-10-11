@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FolderTree,
   FileText,
@@ -16,6 +17,7 @@ import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 export const SourceExplorerPage = ({ onAskAboutSource }) => {
+  const navigate = useNavigate();
   const { currentCourse } = useAuth();
   const [sourcesData, setSourcesData] = useState(null);
   const [selectedDoc, setSelectedDoc] = useState(null);
@@ -151,7 +153,10 @@ export const SourceExplorerPage = ({ onAskAboutSource }) => {
               </div>
 
               <button
-                onClick={() => onAskAboutSource && onAskAboutSource(selectedUnit)}
+                onClick={() => {
+                  if (onAskAboutSource) onAskAboutSource(selectedUnit);
+                  navigate('/tutor');
+                }}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md transition-colors"
               >
                 <Sparkles className="w-3.5 h-3.5" />

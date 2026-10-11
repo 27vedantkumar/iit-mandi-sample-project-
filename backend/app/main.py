@@ -48,13 +48,14 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS Middleware
+# Restrict CORS to explicit allowed origins with credentials
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["Content-Range", "X-Total-Count"],
 )
 
 @app.exception_handler(Exception)

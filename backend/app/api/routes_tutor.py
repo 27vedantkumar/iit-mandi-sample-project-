@@ -25,6 +25,7 @@ class SourceQuestionRequest(BaseModel):
     mode: Optional[str] = "beginner"
 
 @router.post("/ask")
+@router.post("/chat")
 async def ask_tutor(req: TutorAskRequest, db: AsyncSession = Depends(get_db)):
     """
     Submits a grounded query to the AI Tutor.

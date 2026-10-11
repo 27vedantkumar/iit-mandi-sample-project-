@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Send,
   Sparkles,
@@ -19,6 +20,11 @@ import { useAuth } from '../context/AuthContext';
 import { SourceCitation } from '../components/citations/SourceCitation';
 
 export const GroundedTutorPage = ({ onNavigateToSource }) => {
+  const navigate = useNavigate();
+  const handleJump = (citation) => {
+    if (onNavigateToSource) onNavigateToSource(citation);
+    navigate('/sources');
+  };
   const { currentCourse } = useAuth();
   const [messages, setMessages] = useState([
     {
@@ -250,7 +256,7 @@ export const GroundedTutorPage = ({ onNavigateToSource }) => {
                         <SourceCitation
                           key={idx}
                           citation={c}
-                          onJump={onNavigateToSource}
+                          onJump={handleJump}
                         />
                       ))}
                     </div>
